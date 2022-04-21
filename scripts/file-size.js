@@ -1,12 +1,16 @@
+// @ts-nocheck
 const { basename, normalize } = require('path')
 const { readFile: readFileCb } = require('fs')
 const { promisify } = require('util')
 const readFile = promisify(readFileCb)
 
 const kolor = require('kleur')
-const prettyBytes = require('pretty-bytes')
-const brotliSize = require('brotli-size')
-const gzipSize = require('gzip-size')
+// import prettyBytes from 'pretty-bytes';
+let {prettyBytes} = import('pretty-bytes')
+// import brotliSize from 'brotli-size'
+let {brotliSize} = import('brotli-size')
+// import gzipSize from 'gzip-size'
+let {gzipSize} = import('gzip-size')
 const { log } = console
 const pkg = require('../package.json')
 
@@ -73,7 +77,7 @@ function formatSize(size, filename, type, raw) {
  */
 async function getSizeInfo(code, filename, raw = false) {
   const isRaw = raw || code.length < 5000
-  const gzip = formatSize(await gzipSize(code), filename, 'gz', isRaw)
-  const brotli = formatSize(await brotliSize(code), filename, 'br', isRaw)
+  const gzip = 0//formatSize(await gzipSize(code), filename, 'gz', isRaw)
+  const brotli = 0//formatSize(await brotliSize(code), filename, 'br', isRaw)
   return gzip + '\n' + brotli
 }

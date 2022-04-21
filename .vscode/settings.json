@@ -12,5 +12,6 @@
   "typescript.tsdk": "node_modules/typescript/lib",
   "files.associations": {
     "tslint*.json": "jsonc"
-  }
+  },
+  "compile-hero.disable-compile-files-on-did-save-code": true
 }
