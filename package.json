@@ -1,6 +1,6 @@
 {
   "name": "tildate",
-  "version": "1.0.1-0",
+  "version": "1.0.1-1",
   "description": "TilDate is a typescript datetime library to format and parse native js Date()",
   "keywords": [
     "Ttildate",
