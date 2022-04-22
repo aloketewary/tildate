@@ -1,20 +1,25 @@
 export class EnumReflection<T> {
+    // tslint:disable-next-line: no-any
     private names : any = { };
     private _object: T;
 
-    public constructor(object : T) {
+    constructor(object : T) {
         this._object = object;
-        for(let name in object) {
-            let value = object[name];
+        // tslint:disable-next-line: forin
+        for(const name in object) {
+            const value = object[name];
+            // tslint:disable-next-line: no-unsafe-any
             this.names[value] = name;
         }
     }
 
-    public getName(value : string | number) : string {
+    getName(value : string | number) : string {
+        // tslint:disable-next-line: no-unsafe-any
         return this.names[value] || null;
     }
 
-    public getKey(value : string | number) : any {
+    // tslint:disable-next-line: no-any
+    getKey(value : string | number) : any {
         return Object.keys(this._object)[Object.values(this._object).indexOf(value as unknown as T)]|| null;
     }
 }

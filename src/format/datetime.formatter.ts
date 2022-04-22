@@ -3,7 +3,7 @@ import { DateTime } from "../datetime";
 import { assert } from "../error/assert.error";
 import { DateTimeFormatError } from "../error/date-format.error";
 import { Objects } from "../objects/objects.main";
-import { NUMBER_12, NUMBER_17, NUMBER_2, NUMBER_9 } from '../util/app-constant';
+import { NUMBER_0, NUMBER_12, NUMBER_17, NUMBER_2, NUMBER_21, NUMBER_22, NUMBER_23, NUMBER_28, NUMBER_29, NUMBER_30, NUMBER_31, NUMBER_9, NUMBER_MIN_1 } from '../util/app-constant';
 import { IS_DEV } from './../environment';
 import { NUMBER_1, NUMBER_10, NUMBER_11, NUMBER_3, NUMBER_4, NUMBER_5, NUMBER_6, NUMBER_7, NUMBER_8 } from './../util/app-constant';
 import { DateTimeFormat } from "./datetime.format";
@@ -26,6 +26,7 @@ export class DateTimeFormatter {
             newPattern = pattern;
         }
         this._dateTimeFormatBuilder = new DateTimeFormatterBuilder().appendPattern(newPattern).toFormatter();
+
         return this;
     }
 
@@ -39,17 +40,15 @@ export class DateTimeFormatter {
 
     /**
      * public static final DateTimeFormatter BASIC_ISO_DATE
-        The ISO date formatter that formats or parses a date without an offset, such as '20111203'.
-        This returns an immutable formatter capable of formatting and parsing the ISO-8601 basic local date format. The format consists of:
-
-        Four digits for the year. Only years in the range 0000 to 9999 are supported.
-        Two digits for the month-of-year. This is pre-padded by zero to ensure two digits.
-        Two digits for the day-of-month. This is pre-padded by zero to ensure two digits.
-        If the offset is not available to format or parse then the format is complete.
-        The offset ID without colons. If the offset has seconds then they will be handled even though this is not part of the ISO-8601 standard. Parsing is case insensitive.
-        As this formatter has an optional element, it may be necessary to parse using parseBest(java.lang.CharSequence, java.time.temporal.TemporalQuery<?>...).
-
-        The returned formatter has a chronology of ISO set to ensure dates in other calendar systems are correctly converted. It has no override zone and uses the STRICT resolver style.
+     * The ISO date formatter that formats or parses a date without an offset, such as '20111203'.
+     * This returns an immutable formatter capable of formatting and parsing the ISO-8601 basic local date format. The format consists of:
+     * Four digits for the year. Only years in the range 0000 to 9999 are supported.
+     * Two digits for the month-of-year. This is pre-padded by zero to ensure two digits.
+     * Two digits for the day-of-month. This is pre-padded by zero to ensure two digits.
+     * If the offset is not available to format or parse then the format is complete.
+     * The offset ID without colons. If the offset has seconds then they will be handled even though this is not part of the ISO-8601 standard. Parsing is case insensitive.
+     * As this formatter has an optional element, it may be necessary to parse using parseBest(java.lang.CharSequence, java.time.temporal.TemporalQuery<?>...).
+     * The returned formatter has a chronology of ISO set to ensure dates in other calendar systems are correctly converted. It has no override zone and uses the STRICT resolver style.
      */
     static get BASIC_ISO_DATE() {
         return DateTimeFormatter.init.ofPattern('yyyyMMdd');
@@ -57,6 +56,7 @@ export class DateTimeFormatter {
 
 }
 
+// tslint:disable-next-line: max-classes-per-file
 class DateTimeFormatterBuilder {
     private _currentPattern: DateTimeFormatPattern = DateTimeFormatPattern.build();
     private monthList = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -64,6 +64,7 @@ class DateTimeFormatterBuilder {
     appendPattern(pattern: DateTimeFormat): DateTimeFormatterBuilder {
         Objects.requireNonNull({ obj: pattern, message: "pattern" });
         this._currentPattern = DateTimeFormatPattern.build().convert(pattern);
+
         return this;
     }
 
@@ -78,12 +79,14 @@ class DateTimeFormatterBuilder {
     parse(dateTimeInStr: string): DateTime {
         try {
             return this._parse(dateTimeInStr, this._currentPattern);
+        // tslint:disable-next-line: no-any
         } catch (error: any) {
+            // tslint:disable-next-line: no-unsafe-any
             throw new DateTimeFormatError('Date Time Parsing error', error);
         }
     }
 
-    /**
+   /**
     * Format the DateTime
     * @param dateTime DateTime instance
     * @param format DateTimeFormatter
@@ -120,39 +123,39 @@ class DateTimeFormatterBuilder {
                     case 'YY':
                     case 'yy':
                         value = dateTime.year.toString();
-                        value = value.substring(value.length - 2);
+                        value = value.substring(value.length - NUMBER_2);
                         break;
                     case 'L':
                     case 'M':
-                        value = (dateTime.month + 1).toString();
+                        value = (dateTime.month + NUMBER_1).toString();
                         break;
                     case 'LL':
                     case 'MM':
-                        value = (dateTime.month + 1).toString().padStart(2, '0');
+                        value = (dateTime.month + NUMBER_1).toString().padStart(NUMBER_2, '0');
                         break;
                     case 'LLL':
                     case 'MMM':
-                        value = this._month(dateTime.month + 1, true);
+                        value = this._month(dateTime.month + NUMBER_1, true);
                         break;
                     case 'LLLL':
                     case 'MMMM':
-                        value = this._month(dateTime.month + 1, false);
+                        value = this._month(dateTime.month + NUMBER_1, false);
                         break;
                     case 'LLLLL':
                     case 'MMMMM':
-                        value = this._month(dateTime.month + 1, false).substring(0, 1);
+                        value = this._month(dateTime.month + NUMBER_1, false).substring(NUMBER_0, NUMBER_1);
                         break;
                     // 12-hour format of an hour (1 through 12)
                     case 'K':
                     case 'h':
-                        value = (dateTime.getHours() % 12).toString();
-                        if (value == '0') value = '12';
+                        value = (dateTime.getHours() % NUMBER_12).toString();
+                        if (value === '0') value = '12';
                         break;
                     // 12-hour format of an hour (01 through 12) with padding
                     case 'KK':
                     case 'hh':
-                        value = (dateTime.getHours() % 12).toString().padStart(2, '0');
-                        if (value == '00') value = '12';
+                        value = (dateTime.getHours() % NUMBER_12).toString().padStart(NUMBER_2, '0');
+                        if (value === '00') value = '12';
                         break;
                     // 24-hour format of an hour (0 through 23)
                     case 'k':
@@ -162,49 +165,49 @@ class DateTimeFormatterBuilder {
                     // 24-hour format of an hour (00 through 23) with padding
                     case 'kk':
                     case 'HH':
-                        value = dateTime.getHours().toString().padStart(2, '0');
+                        value = dateTime.getHours().toString().padStart(NUMBER_2, '0');
                         break;
                     // Minutes
                     case 'm':
                         value = dateTime.getMinutes().toString();
                         break;
                     case 'mm':
-                        value = dateTime.getMinutes().toString().padStart(2, '0');
+                        value = dateTime.getMinutes().toString().padStart(NUMBER_2, '0');
                         break;
                     // Seconds
                     case 's':
                         value = dateTime.getSeconds().toString();
                         break;
                     case 'ss':
-                        value = dateTime.getSeconds().toString().padStart(2, '0');
+                        value = dateTime.getSeconds().toString().padStart(NUMBER_2, '0');
                         break;
                     // Milliseconds (0 - 999)
                     case 'S':
                         value = dateTime.getMilliseconds().toString();
                         break;
                     case 'SS':
-                        value = dateTime.getMilliseconds().toString().padStart(2, '0');
+                        value = dateTime.getMilliseconds().toString().padStart(NUMBER_2, '0');
                         break;
                     case 'SSS':
-                        value = dateTime.getMilliseconds().toString().padStart(3, '0');
+                        value = dateTime.getMilliseconds().toString().padStart(NUMBER_3, '0');
                         break;
                     case 'SSSS':
-                        value = dateTime.getMilliseconds().toString().padStart(4, '0');
+                        value = dateTime.getMilliseconds().toString().padStart(NUMBER_4, '0');
                         break;
                     case 'SSSSS':
-                        value = dateTime.getMilliseconds().toString().padStart(5, '0');
+                        value = dateTime.getMilliseconds().toString().padStart(NUMBER_5, '0');
                         break;
                     case 'SSSSSS':
-                        value = dateTime.getMilliseconds().toString().padStart(6, '0');
+                        value = dateTime.getMilliseconds().toString().padStart(NUMBER_6, '0');
                         break;
                     case 'SSSSSSS':
-                        value = dateTime.getMilliseconds().toString().padStart(7, '0');
+                        value = dateTime.getMilliseconds().toString().padStart(NUMBER_7, '0');
                         break;
                     case 'SSSSSSSS':
-                        value = dateTime.getMilliseconds().toString().padStart(8, '0');
+                        value = dateTime.getMilliseconds().toString().padStart(NUMBER_8, '0');
                         break;
                     case 'SSSSSSSSS':
-                        value = dateTime.getMilliseconds().toString().padStart(9, '0');
+                        value = dateTime.getMilliseconds().toString().padStart(NUMBER_9, '0');
                         break;
                     case 'n':
                         value = dateTime.nanoSeconds.toString();
@@ -220,10 +223,10 @@ class DateTimeFormatterBuilder {
                         value = this._dayOfYear(dateTime).toString();
                         break;
                     case 'DD':
-                        value = this._dayOfYear(dateTime).toString().padStart(2, '0');
+                        value = this._dayOfYear(dateTime).toString().padStart(NUMBER_2, '0');
                         break;
                     case 'DDD':
-                        value = this._dayOfYear(dateTime).toString().padStart(3, '0');
+                        value = this._dayOfYear(dateTime).toString().padStart(NUMBER_3, '0');
                         break;
                     case 'G':
                     case 'GG':
@@ -240,7 +243,7 @@ class DateTimeFormatterBuilder {
                         value = this._weekNumber(dateTime).toString();
                         break;
                     case 'ww':
-                        value = this._weekNumber(dateTime).toString().padStart(2, '0');
+                        value = this._weekNumber(dateTime).toString().padStart(NUMBER_2, '0');
                         break;
                     case 'W':
                         value = this._getWeek(dateTime).toString();
@@ -250,34 +253,34 @@ class DateTimeFormatterBuilder {
                     case 'EEE':
                     case 'eee':
                     case 'ccc':
-                        value = this._dayOfWeek(dateTime.weekDay + 1, true);
+                        value = this._dayOfWeek(dateTime.weekDay + NUMBER_1, true);
                         break;
                     case 'EEEE':
                     case 'eeee':
                     case 'cccc':
-                        value = this._dayOfWeek(dateTime.weekDay + 1, false);
+                        value = this._dayOfWeek(dateTime.weekDay + NUMBER_1, false);
                         break;
                     case 'EEEEE':
                     case 'eeeee':
                     case 'ccccc':
-                        value = this._dayOfWeek(dateTime.weekDay + 1, false).substring(0, 1);
+                        value = this._dayOfWeek(dateTime.weekDay + NUMBER_1, false).substring(NUMBER_0, NUMBER_1);
                         break;
                     case 'e':
-                        value = (dateTime.weekDay + 1).toString();
+                        value = (dateTime.weekDay + NUMBER_1).toString();
                         break;
                     case 'ee':
-                        value = (dateTime.weekDay + 1).toString().padStart(2, '0');
+                        value = (dateTime.weekDay + NUMBER_1).toString().padStart(NUMBER_2, '0');
                         break;
                     case 'eee':
-                        value = this._dayOfWeek(dateTime.weekDay + 1, true);
+                        value = this._dayOfWeek(dateTime.weekDay + NUMBER_1, true);
                         break;
                     case 'Z':
                     case 'ZZ':
                     case 'ZZZ':
-                        value = dateTime.toTimeString().slice(12, 17);
+                        value = dateTime.toTimeString().slice(NUMBER_12, NUMBER_17);
                         break;
                     case 'ZZZZ':
-                        value = dateTime.toTimeString().slice(9, 12);
+                        value = dateTime.toTimeString().slice(NUMBER_9, NUMBER_12);
                         break;
                     case 'ZZZZZ':
                         value = 'Z'
@@ -296,6 +299,7 @@ class DateTimeFormatterBuilder {
                 formattedDateTime += value ?? notation;
             }
         });
+
         return formattedDateTime;
     }
 
@@ -303,7 +307,7 @@ class DateTimeFormatterBuilder {
     ///
     /// [month] must be in the range of `1-12`.
     private _month(month: number, abbr: boolean): string {
-        assert(month >= 1 && month <= 12);
+        assert(month >= NUMBER_1 && month <= NUMBER_12);
         let nameOfMonth = '';
         switch (month) {
             case NUMBER_1:
@@ -342,6 +346,8 @@ class DateTimeFormatterBuilder {
             case NUMBER_12:
                 nameOfMonth = abbr ? 'Dec' : 'December';
                 break;
+            default:
+                break;
         }
 
         return nameOfMonth;
@@ -349,71 +355,74 @@ class DateTimeFormatterBuilder {
 
     private _reverseMonth(month: string, abbr: boolean, singleChar?: boolean): number {
         if (singleChar) {
-            assert(this.monthList.map(val => val.substring(0, 1)).indexOf(month) != -1);
+            assert(this.monthList.map(val => val.substring(NUMBER_0, NUMBER_1)).indexOf(month) !== NUMBER_MIN_1);
         } else {
-            assert(abbr ? this.monthList.map(val => val.substring(0, 2)).indexOf(month) != -1 : this.monthList.indexOf(month) != -1);
+            assert(abbr ? this.monthList.map(val => val.substring(NUMBER_0, NUMBER_2)).indexOf(month) !== NUMBER_MIN_1 : this.monthList.indexOf(month) !== NUMBER_MIN_1);
         }
-        let nameOfMonth = -1;
+        let nameOfMonth = NUMBER_MIN_1;
+        // tslint:disable-next-line: no-duplicate-case
         switch (month) {
             case 'J':
             case 'Jan':
             case 'January':
-                nameOfMonth = 0;
+                nameOfMonth = NUMBER_0;
                 break;
             case 'F':
             case 'Feb':
             case 'February':
-                nameOfMonth = 1;
+                nameOfMonth = NUMBER_1;
                 break;
             case 'M':
             case 'Mar':
             case 'March':
-                nameOfMonth = 2;
+                nameOfMonth = NUMBER_2;
                 break;
             case 'A':
             case 'Apr':
             case 'April':
-                nameOfMonth = 3;
+                nameOfMonth = NUMBER_3;
                 break;
             case 'M':
             case 'May':
-                nameOfMonth = 4;
+                nameOfMonth = NUMBER_4;
                 break;
             case 'J':
             case 'Jun':
             case 'June':
-                nameOfMonth = 5;
+                nameOfMonth = NUMBER_5;
                 break;
             case 'J':
             case 'Jul':
             case 'July':
-                nameOfMonth = 6;
+                nameOfMonth = NUMBER_6;
                 break;
             case 'A':
             case 'Aug':
             case 'August':
-                nameOfMonth = 7;
+                nameOfMonth = NUMBER_7;
                 break;
             case 'S':
             case 'Sep':
             case 'September':
-                nameOfMonth = 8;
+                nameOfMonth = NUMBER_8;
                 break;
             case 'O':
             case 'Oct':
             case 'October':
-                nameOfMonth = 9;
+                nameOfMonth = NUMBER_9;
                 break;
             case 'N':
             case 'Nov':
             case 'November':
-                nameOfMonth = 10;
+                nameOfMonth = NUMBER_10;
                 break;
             case 'D':
             case 'Dec':
             case 'December':
-                nameOfMonth = 11;
+                nameOfMonth = NUMBER_11;
                 break;
+            default:
+              break;
         }
 
         return nameOfMonth;
@@ -424,63 +433,67 @@ class DateTimeFormatterBuilder {
      * @returns number
      */
     private _getQuarterOfYear(dateTime: DateTime): number {
-        const month = dateTime.month + 1;
-        return (Math.ceil(month / 3));
+        const month = dateTime.month + NUMBER_1;
+
+        return (Math.ceil(month / NUMBER_3));
     }
 
     /// Returns the day of the year starting from 0.
     private _dayOfYear(dateTime: DateTime): number {
         let dayOfYear = dateTime.date;
-        const month = dateTime.month + 1;
+        const month = dateTime.month + NUMBER_1;
         const year = dateTime.year;
-        for (var i = 1; i < month; i++) {
+        for (let i = NUMBER_1; i < month; i++) {
             dayOfYear += this._daysInMonth(i, year);
         }
+        
         return dayOfYear;
     }
 
     /// Returns the number of days in [month].
     private _daysInMonth(month: number, year: number): number {
-        assert(month >= 1 && month <= 12);
+        assert(month >= NUMBER_1 && month <= NUMBER_12);
 
-        let days: number = 0;
+        let days = NUMBER_0;
 
         switch (month) {
-            case 1:
-                days = 31;
+            case NUMBER_1:
+                days = NUMBER_31;
                 break;
-            case 2:
-                days = this._isLeapYear(year) ? 29 : 28;
+            case NUMBER_2:
+                days = this._isLeapYear(year) ? NUMBER_29 : NUMBER_28;
                 break;
-            case 3:
-                days = 31;
+            case NUMBER_3:
+                days = NUMBER_31;
                 break;
-            case 4:
-                days = 30;
+            case NUMBER_4:
+                days = NUMBER_30;
                 break;
-            case 5:
-                days = 31;
+            case NUMBER_5:
+                days = NUMBER_31;
                 break;
-            case 6:
-                days = 30;
+            case NUMBER_6:
+                days = NUMBER_30;
                 break;
-            case 7:
-                days = 31;
+            case NUMBER_7:
+                days = NUMBER_31;
                 break;
-            case 8:
-                days = 31;
+            case NUMBER_8:
+                days = NUMBER_31;
                 break;
-            case 9:
-                days = 30;
+            case NUMBER_9:
+                days = NUMBER_30;
                 break;
-            case 10:
-                days = 31;
+            case NUMBER_10:
+                days = NUMBER_31;
                 break;
-            case 11:
-                days = 30;
+            case NUMBER_11:
+                days = NUMBER_30;
                 break;
-            case 12:
-                days = 31;
+            case NUMBER_12:
+                days = NUMBER_31;
+                break;
+            default:
                 break;
         }
 
@@ -489,12 +502,14 @@ class DateTimeFormatterBuilder {
 
     /// Returns `true` if [year] is a leap year, otherwise returns `false`.
     private _isLeapYear(year: number): boolean {
-        return year % 100 == 0 ? year % 400 == 0 : year % 4 == 0;
+        // tslint:disable-next-line: no-magic-numbers
+        return year % 100 === NUMBER_0 ? year % 400 === NUMBER_0 : year % NUMBER_4 === NUMBER_0;
     }
 
     private _weekNumber(dateTime: DateTime): number {
         const numberOfDays = this._dayOfYear(dateTime);
-        return Math.ceil(((dateTime.getDay() + numberOfDays) / 7) + 1);
+
+        return Math.ceil(((dateTime.getDay() + numberOfDays) / NUMBER_7) + NUMBER_1);
     }
 
     /// Returns the name of the day of the week, abbreviated if [abbr] is `true`.
@@ -503,50 +518,53 @@ class DateTimeFormatterBuilder {
     ///
     /// The week starts from Monday.
     private _dayOfWeek(dayOfWeek: number, abbr: boolean) {
-        assert(dayOfWeek >= 1 && dayOfWeek <= 7);
+        assert(dayOfWeek >= NUMBER_1 && dayOfWeek <= NUMBER_7);
 
-        let nameOfDay: string = '';
+        let nameOfDay = '';
         switch (dayOfWeek) {
-            case 1:
+            case NUMBER_1:
                 nameOfDay = abbr ? 'Sun' : 'Sunday';
                 break;
-            case 2:
+            case NUMBER_2:
                 nameOfDay = abbr ? 'Mon' : 'Monday';
                 break;
-            case 3:
+            case NUMBER_3:
                 nameOfDay = abbr ? 'Tue' : 'Tuesday';
                 break;
-            case 4:
+            case NUMBER_4:
                 nameOfDay = abbr ? 'Wed' : 'Wednesday';
                 break;
-            case 5:
+            case NUMBER_5:
                 nameOfDay = abbr ? 'Thu' : 'Thursday';
                 break;
-            case 6:
+            case NUMBER_6:
                 nameOfDay = abbr ? 'Fri' : 'Friday';
                 break;
-            case 7:
+            case NUMBER_7:
                 nameOfDay = abbr ? 'Sat' : 'Saturday';
                 break;
+            default:
+              break;
         }
 
         return nameOfDay;
     }
 
     private _getWeek(date: DateTime): number {
-        let monthStart = new Date(date);
-        monthStart.setDate(0);
-        let offset = (monthStart.getDay() + 1) % 7; // -1 is for a week starting on Monday
-        return Math.ceil((date.getDate() + offset) / 7);
+        const monthStart = new Date(date);
+        monthStart.setDate(NUMBER_0);
+        const offset = (monthStart.getDay() + NUMBER_1) % NUMBER_7; // -1 is for a week starting on Monday
+
+        return Math.ceil((date.getDate() + offset) / NUMBER_7);
     }
 
     /// Returns the suffix (`st`, `nd`, `rd`, or `th`) of [day].
     private _suffixOfDay(day: number): string {
-        if (day === 1 || day === 21 || day === 31) {
+        if (day === NUMBER_1 || day === NUMBER_21 || day === NUMBER_31) {
             return 'st';
-        } else if (day === 2 || day === 22) {
+        } else if (day === NUMBER_2 || day === NUMBER_22) {
             return 'nd';
-        } else if (day === 3 || day === 23) {
+        } else if (day === NUMBER_3 || day === NUMBER_23) {
             return 'rd';
         }
 
@@ -787,6 +805,7 @@ class DateTimeFormatterBuilder {
 }
 
 
+// tslint:disable-next-line: max-classes-per-file
 class DateTimeFormatPattern {
     private _pattern: string;
     private constructor() {

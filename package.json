@@ -3,7 +3,7 @@
   "version": "1.0.1-1",
   "description": "TilDate is a typescript datetime library to format and parse native js Date()",
   "keywords": [
-    "Ttildate",
+    "tildate",
     "date",
     "datetime",
     "jsdate",
@@ -18,7 +18,7 @@
     "type": "git",
     "url": "https://github.com/aloketewary/tildate"
   },
-  "author": "Aloke Tewary <aloketewary@gmail.com>",
+  "author": "Aloke Tewary <aloke@duck.com>",
   "license": "MIT",
   "engines": {
     "node": ">=8.5",
@@ -48,7 +48,7 @@
     "release": "standard-version",
     "postrelease": "node scripts/copy && node scripts/build && npm run release:github && npm run release:npm",
     "release:github": "git push --no-verify --follow-tags origin master",
-    "release:npm": "npm publish dist",
+    "release:npm": "npm publish",
     "release:preflight": "npm pack ./dist --dry-run",
     "size": "node scripts/file-size ./dist/bundles/index.umd.min.js ./dist/bundles/index.esm.min.js"
   },

@@ -2,6 +2,7 @@ import { EnumReflection } from "./class/enum-reflection.class";
 import { UnitOfDateTime } from "./enum/unit.enum";
 import { DateTimeFormat } from "./format/datetime.format";
 import { DateTimeFormatter } from "./format/datetime.formatter";
+import { NUMBER_0, NUMBER_10, NUMBER_1000, NUMBER_12, NUMBER_23, NUMBER_24, NUMBER_4, NUMBER_59, NUMBER_6, NUMBER_60, NUMBER_7, NUMBER_999 } from "./util/app-constant";
 
 /**
  * For the most part this object behaves exactly the same way
@@ -10,32 +11,35 @@ import { DateTimeFormatter } from "./format/datetime.formatter";
 export class DateTime extends Date {
     private unitOfDateTime = new EnumReflection(UnitOfDateTime);
 
-    /**
+   /**
     * Used with Intl.DateTimeFormat
     * @type {string}
     */
-    private locale: string = "default";
+    private locale = "default";
 
-    /**
+  /**
    * Chainable way to set the {@link locale}
    * @param value
    * @returns {DateTime}
    */
     setLocale(value: string): DateTime {
         this.locale = value;
+
         return this;
     }
 
-    /**
+  /**
    * Converts a plain JS date object to a DateTime object.
    * Doing this allows access to format, etc.
    * @param {Date|DateTime} date
    * @returns {DateTime}
    */
     static convert(date: Date): DateTime {
-        if (!date) throw `A date is required`;
+        if (!date) throw new Error(`A date is required`);
         // if (typeof date.startOf === 'function') return date;
-        if (typeof date.getDate !== 'function') throw `A date is required`;
+        // tslint:disable-next-line: strict-type-predicates
+        if (typeof date.getDate !== 'function') throw new Error(`A date is required`);
+
         return new DateTime(
             date.getFullYear(),
             date.getMonth(),
@@ -63,7 +67,7 @@ export class DateTime extends Date {
         ).setLocale(this.locale);
     }
 
-    /**
+  /**
    * Shortcut to Date.getSeconds()
    * @returns {number}
    */
@@ -78,7 +82,7 @@ export class DateTime extends Date {
         this.setSeconds(value);
     }
 
-    /**
+  /**
    * Shortcut to Date.getMinutes()
    * @returns {number}
    */
@@ -93,7 +97,7 @@ export class DateTime extends Date {
         this.setMinutes(value);
     }
 
-    /**
+  /**
    * Shortcut to Date.getHours()
    * @returns {number}
    */
@@ -108,10 +112,10 @@ export class DateTime extends Date {
         this.setHours(value);
     }
 
-    /**
-  * Shortcut to Date.getDate()
-  * @returns {number}
-  */
+   /**
+    * Shortcut to Date.getDate()
+    * @returns {number}
+    */
     get date(): number {
         return this.getDate();
     }
@@ -123,12 +127,12 @@ export class DateTime extends Date {
         this.setDate(value);
     }
 
-    /**
+  /**
    * Return two digit date
    * @returns {string}
    */
     get dateFormatted(): string {
-        return this.date < 10 ? `0${this.date}` : `${this.date}`;
+        return this.date < NUMBER_10 ? `0${this.date}` : `${this.date}`;
     }
 
     // https://github.com/you-dont-need/You-Dont-Need-Momentjs#week-of-year
@@ -141,8 +145,9 @@ export class DateTime extends Date {
         const firstDayOfWeek = 1; // monday as the first day (0 = sunday)
         const startOfYear = new Date(this.year, 0, 1);
         startOfYear.setDate(
-            startOfYear.getDate() + (firstDayOfWeek - (startOfYear.getDay() % 7))
+            startOfYear.getDate() + (firstDayOfWeek - (startOfYear.getDay() % NUMBER_7))
         );
+
         return (
             Math.round(
                 (this.valueOf() - startOfYear.valueOf()) / MILLISECONDS_IN_WEEK
@@ -173,7 +178,7 @@ export class DateTime extends Date {
         this.setMonth(value);
     }
 
-    /**
+  /**
    * Shortcut to Date.getFullYear()
    * @returns {number}
    */
@@ -188,15 +193,15 @@ export class DateTime extends Date {
         this.setFullYear(value);
     }
 
-    /**
+  /**
    * Return two digit, human expected month. E.g. January = 1, December = 12
    * @returns {string}
    */
     get monthFormatted(): string {
-        return this.month + 1 < 10 ? `0${this.month}` : `${this.month}`;
+        return this.month + 1 < NUMBER_10 ? `0${this.month}` : `${this.month}`;
     }
 
-    /**
+  /**
    * Get the meridiem of the date. E.g. AM or PM.
    * If the {@link locale} provides a "dayPeriod" then this will be returned,
    * otherwise it will return AM or PM.
@@ -204,10 +209,10 @@ export class DateTime extends Date {
    * @returns {string}
    */
     meridiem(locale: string = this.locale): string {
-        return this.getHours() <= 12 ? "AM" : "PM";
+        return this.getHours() <= NUMBER_12 ? "AM" : "PM";
     }
 
-    /**
+  /**
    * Sets the current date to the start of the {@link unit} provided
    * Example: Consider a date of "April 30, 2021, 11:45:32.984 AM" => new DateTime(2021, 3, 30, 11, 45, 32, 984).startOf('month')
    * would return April 1, 2021, 12:00:00.000 AM (midnight)
@@ -216,7 +221,8 @@ export class DateTime extends Date {
    * @returns {DateTime} self
    */
     startOf(unit: UnitOfDateTime, startOfTheWeek = 0): DateTime {
-        if (this.unitOfDateTime.getName(unit) === undefined) throw `Unit '${unit}' is not valid`;
+        // tslint:disable-next-line: strict-type-predicates
+        if (this.unitOfDateTime.getName(unit) === undefined) throw new Error(`Unit '${unit}' is not valid`);
         switch (unit) {
             case UnitOfDateTime.SECONDS:
                 this.setMilliseconds(0);
@@ -242,7 +248,10 @@ export class DateTime extends Date {
                 this.startOf(UnitOfDateTime.DATE);
                 this.setMonth(0, 1);
                 break;
+            default:
+                break;
         }
+
         return this;
     }
 
@@ -254,23 +263,24 @@ export class DateTime extends Date {
      * @returns {DateTime} self
      */
     endOf(unit: UnitOfDateTime): DateTime {
-        if (this.unitOfDateTime.getName(unit) == null) throw `Unit '${unit}' is not valid`;
+        // tslint:disable-next-line: strict-type-predicates
+        if (this.unitOfDateTime.getName(unit) == null) throw new Error(`Unit '${unit}' is not valid`);
         switch (unit) {
             case UnitOfDateTime.SECONDS:
-                this.setMilliseconds(999);
+                this.setMilliseconds(NUMBER_999);
                 break;
             case UnitOfDateTime.MINUTES:
-                this.setSeconds(59, 999);
+                this.setSeconds(NUMBER_59, NUMBER_999);
                 break;
             case UnitOfDateTime.HOURS:
-                this.setMinutes(59, 59, 999);
+                this.setMinutes(NUMBER_59, NUMBER_59, NUMBER_999);
                 break;
             case UnitOfDateTime.DATE:
-                this.setHours(23, 59, 59, 999);
+                this.setHours(NUMBER_23, NUMBER_59, NUMBER_59, NUMBER_999);
                 break;
             case UnitOfDateTime.WEEKDAY:
                 this.startOf(UnitOfDateTime.DATE);
-                this.manipulate(6 - this.weekDay, UnitOfDateTime.DATE);
+                this.manipulate(NUMBER_6 - this.weekDay, UnitOfDateTime.DATE);
                 break;
             case UnitOfDateTime.MONTH:
                 this.endOf(UnitOfDateTime.DATE);
@@ -282,11 +292,13 @@ export class DateTime extends Date {
                 this.manipulate(1, UnitOfDateTime.YEAR);
                 this.setDate(0);
                 break;
+                default: break;
         }
+
         return this;
     }
 
-    /**
+ /**
   * Change a {@link unit} value. Value can be positive or negative
   * Example: Consider a date of "April 30, 2021, 11:45:32.984 AM" => new DateTime(2021, 3, 30, 11, 45, 32, 984).manipulate(1, 'month')
   * would return May 30, 2021, 11:45:32.984 AM
@@ -295,20 +307,23 @@ export class DateTime extends Date {
   * @returns {DateTime}
   */
     manipulate(value: number, unit: UnitOfDateTime): DateTime {
-        if (this.unitOfDateTime.getName(unit) === undefined) throw `Unit '${unit}' is not valid`;
+        // tslint:disable-next-line: strict-type-predicates
+        if (this.unitOfDateTime.getName(unit) === undefined) throw new Error(`Unit '${unit}' is not valid`);
         this[unit] += value;
+
         return this;
     }
 
-    /**
+ /**
   * Shortcut to Date.getDay()
-  * 
+  *
   */
+    // tslint:disable-next-line: adjacent-overload-signatures
     set weekDay(value: number) {
         throw Error(`${value} ${this.locale}`);
     }
 
-    /**
+  /**
    * Return true if {@link compare} is before this date
    * @param {DateTime} compare The Date/DateTime to compare
    * @param {UnitOfDateTime?} unit. If provided, uses {@link startOf} for
@@ -317,8 +332,11 @@ export class DateTime extends Date {
    */
     isBefore(compare: DateTime, unit?: UnitOfDateTime): boolean {
         if (!unit) return this < compare;
-        if (this[unit] === undefined) throw `Unit '${unit}' is not valid`;
+        // tslint:disable-next-line: strict-type-predicates
+        if (this[unit] === undefined) throw new Error(`Unit '${unit}' is not valid`);
+        // tslint:disable-next-line: no-parameter-reassignment
         compare = DateTime.convert(compare);
+
         return (
             this.clone.startOf(unit).valueOf() < compare.clone.startOf(unit).valueOf()
         );
@@ -333,8 +351,11 @@ export class DateTime extends Date {
      */
     isAfter(compare: DateTime, unit?: UnitOfDateTime): boolean {
         if (!unit) return this > compare;
-        if (this[unit] === undefined) throw `Unit '${unit}' is not valid`;
+        // tslint:disable-next-line: strict-type-predicates
+        if (this[unit] === undefined) throw new Error(`Unit '${unit}' is not valid`);
+        // tslint:disable-next-line: no-parameter-reassignment
         compare = DateTime.convert(compare);
+
         return (
             this.clone.startOf(unit).valueOf() > compare.clone.startOf(unit).valueOf()
         );
@@ -349,8 +370,11 @@ export class DateTime extends Date {
      */
     isSame(compare: DateTime, unit: UnitOfDateTime): boolean {
         if (!unit) return this.valueOf() === compare.valueOf();
-        if (this[unit] === undefined) throw `Unit '${unit}' is not valid`;
+        // tslint:disable-next-line: strict-type-predicates
+        if (this[unit] === undefined) throw new Error(`Unit '${unit}' is not valid`);
+        // tslint:disable-next-line: no-parameter-reassignment
         compare = DateTime.convert(compare);
+
         return (
             this.clone.startOf(unit).valueOf() === compare.startOf(unit).valueOf()
         );
@@ -366,10 +390,13 @@ export class DateTime extends Date {
      * @returns {boolean}
      */
     isBetween(left: DateTime, right: DateTime, unit: UnitOfDateTime, inclusivity = "()"): boolean {
-        if (this[unit] === undefined) throw `Unit '${unit}' is not valid`;
+        // tslint:disable-next-line: strict-type-predicates
+        if (this[unit] === undefined) throw new Error(`Unit '${unit}' is not valid`);
         const leftInclusivity = inclusivity[0] === "(";
         const rightInclusivity = inclusivity[1] === ")";
+        // tslint:disable-next-line: no-parameter-reassignment
         left = DateTime.convert(left);
+        // tslint:disable-next-line: no-parameter-reassignment
         right = DateTime.convert(right);
 
         return (
@@ -390,6 +417,7 @@ export class DateTime extends Date {
 
     // workaround as js doesnot support nanoseconds in its layer
     get nanoSeconds(): number {
+        // tslint:disable-next-line: no-magic-numbers
         return Math.round(this.getTime() * 1000);
     }
 
@@ -398,18 +426,21 @@ export class DateTime extends Date {
     }
 
     secondsSinceEpoch(): number {
+        // tslint:disable-next-line: no-magic-numbers
         return Math.round(this.milisecondsSinceEpoch() / 1000);
     }
 
     /// Returns `true` if [year] is a leap year, otherwise returns `false`.
     isLeapYear(year: number): boolean {
-        return year % 100 == 0 ? year % 400 == 0 : year % 4 == 0;
+        // tslint:disable-next-line: no-magic-numbers
+        return year % 100 === NUMBER_0 ? year % 400 === NUMBER_0 : year % NUMBER_4 === NUMBER_0;
     }
 
     get weekNumber(): number {
         const oneJan = new DateTime(this.getFullYear(), 0, 1);
-        const numberOfDays = Math.floor((this.getTime() - oneJan.getTime()) / (24 * 60 * 60 * 1000));
-        return Math.ceil((this.getDay() + 1 + numberOfDays) / 7);
+        const numberOfDays = Math.floor((this.getTime() - oneJan.getTime()) / (NUMBER_24 * NUMBER_60 * NUMBER_60 * NUMBER_1000));
+
+        return Math.ceil((this.getDay() + 1 + numberOfDays) / NUMBER_7);
     }
 
     format(pattern: DateTimeFormat | string): string {
