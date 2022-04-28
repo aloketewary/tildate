@@ -1,6 +1,6 @@
 {
   "name": "tildate",
-  "version": "0.0.2",
+  "version": "1.0.0",
   "description": "TilDate is a typescript datetime library to format and parse native js Date()",
   "main": "build/main/index.js",
   "typings": "build/main/index.d.ts",
@@ -18,7 +18,6 @@
     "test": "run-s build test:*",
     "test:lint": "eslint src --ext .ts",
     "test:prettier": "prettier \"src/**/*.ts\" --list-different",
-    "test:spelling": "cspell \"{README.md,.github/*.md,src/**/*.ts}\"",
     "test:unit": "nyc --silent ava",
     "check-cli": "run-s test diff-integration-tests check-integration-tests",
     "check-integration-tests": "run-s check-integration-test:*",
@@ -41,7 +40,9 @@
   "engines": {
     "node": ">=10"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@bitauth/libauth": "^1.17.1"
+  },
   "devDependencies": {
     "@ava/typescript": "^1.1.1",
     "@istanbuljs/nyc-config-typescript": "^1.0.1",
@@ -54,7 +55,6 @@
     "eslint": "^7.8.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-eslint-comments": "^3.2.0",
-    "eslint-plugin-functional": "^3.0.2",
     "eslint-plugin-import": "^2.22.0",
     "gh-pages": "^3.1.0",
     "npm-run-all": "^4.1.5",
