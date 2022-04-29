@@ -97,3 +97,28 @@ test('DateTime() check meridiem of AM and PM', async (t) => {
   dateTime.hours = 23;
   t.is('PM', dateTime.meridiem());
 });
+
+test('DateTime() week number', async (t) => {
+  const dateTime = new DateTime(2022, 0o3, 10, 10, 12, 20, 852);
+  t.is(15, dateTime.weekNumber);
+});
+
+test('DateTime() check for leap year false', async (t) => {
+  const dateTime = new DateTime(2022, 0o3, 10, 10, 12, 20, 852);
+  t.false(dateTime.isLeapYear());
+});
+
+test('DateTime() check seconds epoch', async (t) => {
+  const dateTime = new DateTime(2022, 0o3, 10, 10, 12, 20, 852);
+  t.is(1649565741, dateTime.secondsSinceEpoch());
+});
+
+test('DateTime() check milliseconds epoch', async (t) => {
+  const dateTime = new DateTime(2022, 0o3, 10, 10, 12, 20, 852);
+  t.is(1649565740852, dateTime.millisecondsSinceEpoch());
+});
+
+test('DateTime() check nanoSeconds', async (t) => {
+  const dateTime = new DateTime(2022, 0o3, 10, 10, 12, 20, 852);
+  t.is(1649565740852000, dateTime.nanoSeconds);
+});
