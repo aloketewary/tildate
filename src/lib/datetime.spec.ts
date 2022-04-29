@@ -109,6 +109,16 @@ test('DateTime() check for leap year false', async (t) => {
   t.false(dateTime.isLeapYear());
 });
 
+test('DateTime() check for leap year true', async (t) => {
+  const dateTime = new DateTime(2004, 0o3, 10, 10, 12, 20, 852);
+  t.true(dateTime.isLeapYear());
+});
+
+test('DateTime(2000) check for leap year true', async (t) => {
+  const dateTime = new DateTime(2000, 0o3, 10, 10, 12, 20, 852);
+  t.true(dateTime.isLeapYear());
+});
+
 test('DateTime() check seconds epoch', async (t) => {
   const dateTime = new DateTime(2022, 0o3, 10, 10, 12, 20, 852);
   t.is(1649565741, dateTime.secondsSinceEpoch());
@@ -129,6 +139,28 @@ test('DateTime(2023, 03) is Between DateTime(2021, 03) year', async (t) => {
   const dateTime2 = new DateTime(2022, 0o3, 10, 10, 12, 20, 852);
   const dateTime3 = new DateTime(2021, 0o3, 10, 10, 12, 20, 852);
   t.true(dateTime2.isBetween(dateTime, dateTime3, 'year'));
+});
+
+test('DateTime(2023, 03) is Between not inclusive DateTime(2021, 03) year', async (t) => {
+  const dateTime = new DateTime(2023, 0o3, 10, 10, 12, 20, 852);
+  const dateTime2 = new DateTime(2022, 0o3, 10, 10, 12, 20, 852);
+  const dateTime3 = new DateTime(2021, 0o3, 10, 10, 12, 20, 852);
+  t.true(dateTime2.isBetween(dateTime, dateTime3, 'year', "[]"));
+});
+
+test('DateTime(2021, 03) is Between DateTime(2023, 03) year', async (t) => {
+  const dateTime = new DateTime(2021, 0o3, 10, 10, 12, 20, 852);
+  const dateTime2 = new DateTime(2022, 0o3, 10, 10, 12, 20, 852);
+  const dateTime3 = new DateTime(2023, 0o3, 10, 10, 12, 20, 852);
+  t.true(dateTime2.isBetween(dateTime, dateTime3, 'year', "[]"));
+});
+
+
+test('DateTime(2021, 03) is not Between DateTime(2023, 03) year', async (t) => {
+  const dateTime = new DateTime(2021, 0o3, 10, 10, 12, 20, 852);
+  const dateTime2 = new DateTime(2025, 0o3, 10, 10, 12, 20, 852);
+  const dateTime3 = new DateTime(2023, 0o3, 10, 10, 12, 20, 852);
+  t.false(dateTime2.isBetween(dateTime, dateTime3, 'year'));
 });
 
 test('DateTime(2022, 03) is same DateTime(2022, 03) year', async (t) => {
