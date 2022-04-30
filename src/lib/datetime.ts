@@ -405,6 +405,7 @@ export class DateTime extends Date {
   }
 
   millisecondsSinceEpoch(): number {
+
     return Math.round(this.getTime());
   }
 
@@ -413,17 +414,23 @@ export class DateTime extends Date {
     return Math.round(this.millisecondsSinceEpoch() / NUMBER_1000);
   }
 
-  /// Returns `true` if [year] is a leap year, otherwise returns `false`.
+   /**
+    * Returns `true` if [year] is a leap year, otherwise returns `false`.
+    */
   isLeapYear(): boolean {
 
     return this.year % NUMBER_100 === NUMBER_0 ? this.year % NUMBER_400 === NUMBER_0 : this.year % NUMBER_4 === NUMBER_0;
   }
 
+  /**
+   */
   get weekNumber(): number {
     const oneJan = new DateTime(this.getFullYear(), 0, 1);
     const numberOfDays = Math.floor((this.getTime() - oneJan.getTime()) / (NUMBER_24 * NUMBER_60 * NUMBER_60 * NUMBER_1000));
 
     return Math.ceil((this.getDay() + 1 + numberOfDays) / NUMBER_7);
   }
+
+  
 
 }
