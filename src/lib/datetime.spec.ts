@@ -1,6 +1,7 @@
 import test from 'ava';
 
 import { DateTime } from './datetime';
+import { UnitOfDateTime } from './util/unit-of-datetime.type';
 
 test('DateTime() is same as js Date()', async (t) => {
   t.is(new DateTime().toDateString(), new Date().toDateString());
@@ -96,4 +97,114 @@ test('DateTime() check meridiem of AM and PM', async (t) => {
   t.is('AM', dateTime.meridiem());
   dateTime.hours = 23;
   t.is('PM', dateTime.meridiem());
+});
+
+test('DateTime() week number', async (t) => {
+  const dateTime = new DateTime(2022, 0o3, 10, 10, 12, 20, 852);
+  t.is(15, dateTime.weekNumber);
+});
+
+test('DateTime() check for leap year false', async (t) => {
+  const dateTime = new DateTime(2022, 0o3, 10, 10, 12, 20, 852);
+  t.false(dateTime.isLeapYear());
+});
+
+test('DateTime() check for leap year true', async (t) => {
+  const dateTime = new DateTime(2004, 0o3, 10, 10, 12, 20, 852);
+  t.true(dateTime.isLeapYear());
+});
+
+test('DateTime(2000) check for leap year true', async (t) => {
+  const dateTime = new DateTime(2000, 0o3, 10, 10, 12, 20, 852);
+  t.true(dateTime.isLeapYear());
+});
+
+test('DateTime() check seconds epoch', async (t) => {
+  const dateTime = new DateTime(2022, 0o3, 10, 10, 12, 20, 852);
+  t.is(1649565741, dateTime.secondsSinceEpoch());
+});
+
+test('DateTime() check milliseconds epoch', async (t) => {
+  const dateTime = new DateTime(2022, 0o3, 10, 10, 12, 20, 852);
+  t.is(1649565740852, dateTime.millisecondsSinceEpoch());
+});
+
+test('DateTime() check nanoSeconds', async (t) => {
+  const dateTime = new DateTime(2022, 0o3, 10, 10, 12, 20, 852);
+  t.is(1649565740852000, dateTime.nanoSeconds);
+});
+
+test('DateTime(2023, 03) is Between DateTime(2021, 03) year', async (t) => {
+  const dateTime = new DateTime(2023, 0o3, 10, 10, 12, 20, 852);
+  const dateTime2 = new DateTime(2022, 0o3, 10, 10, 12, 20, 852);
+  const dateTime3 = new DateTime(2021, 0o3, 10, 10, 12, 20, 852);
+  t.true(dateTime2.isBetween(dateTime, dateTime3, 'year'));
+});
+
+test('DateTime(2023, 03) is Between not inclusive DateTime(2021, 03) year', async (t) => {
+  const dateTime = new DateTime(2023, 0o3, 10, 10, 12, 20, 852);
+  const dateTime2 = new DateTime(2022, 0o3, 10, 10, 12, 20, 852);
+  const dateTime3 = new DateTime(2021, 0o3, 10, 10, 12, 20, 852);
+  t.true(dateTime2.isBetween(dateTime, dateTime3, 'year', "[]"));
+});
+
+test('DateTime(2021, 03) is Between DateTime(2023, 03) year', async (t) => {
+  const dateTime = new DateTime(2021, 0o3, 10, 10, 12, 20, 852);
+  const dateTime2 = new DateTime(2022, 0o3, 10, 10, 12, 20, 852);
+  const dateTime3 = new DateTime(2023, 0o3, 10, 10, 12, 20, 852);
+  t.true(dateTime2.isBetween(dateTime, dateTime3, 'year', "[]"));
+});
+
+
+test('DateTime(2021, 03) is not Between DateTime(2023, 03) year', async (t) => {
+  const dateTime = new DateTime(2021, 0o3, 10, 10, 12, 20, 852);
+  const dateTime2 = new DateTime(2025, 0o3, 10, 10, 12, 20, 852);
+  const dateTime3 = new DateTime(2023, 0o3, 10, 10, 12, 20, 852);
+  t.false(dateTime2.isBetween(dateTime, dateTime3, 'year'));
+});
+
+test('DateTime(2022, 03) is same DateTime(2022, 03) year', async (t) => {
+  const dateTime = new DateTime(2022, 0o3, 10, 10, 12, 20, 852);
+  const dateTime2 = new DateTime(2022, 0o3, 10, 10, 12, 20, 852);
+  t.true(dateTime2.isSame(dateTime, 'year'));
+});
+
+test('DateTime(2022, 03) is same DateTime(2022, 03) with out unit', async (t) => {
+  const dateTime = new DateTime(2022, 0o3, 10, 10, 12, 20, 852);
+  const dateTime2 = new DateTime(2022, 0o3, 10, 10, 12, 20, 852);
+  t.true(dateTime2.isSame(dateTime));
+});
+
+test('DateTime(2022, 03) is same DateTime(2022, 03) undefined unit throws error', async (t) => {
+  const dateTime = new DateTime(2022, 0o3, 10, 10, 12, 20, 852);
+  const dateTime2 = new DateTime(2022, 0o3, 10, 10, 12, 20, 852);
+  const error = t.throws(() => {
+		dateTime.isSame(dateTime2, 'years' as unknown as UnitOfDateTime);
+	}, {instanceOf: Error});
+
+	t.is(error.message, 'Unit \'years\' is not valid');
+});
+
+test('DateTime(2022, 03) start of DateTime(2022, 03) with month', async (t) => {
+  const dateTime = new DateTime(2022, 0o3, 10, 10, 12, 20, 852);
+  const dateTime2 = new DateTime(2022, 0o3, 10, 10, 12, 20, 852);
+  t.is(dateTime.toDateString(), dateTime2.startOf('seconds').toDateString());
+  t.is(dateTime.toDateString(), dateTime2.startOf('minutes').toDateString());
+  t.is(dateTime.toDateString(), dateTime2.startOf('hours').toDateString());
+  t.is(dateTime.toDateString(), dateTime2.startOf('date').toDateString());
+  t.is('Fri Apr 01 2022', dateTime2.startOf('month').toDateString());
+  t.is('Sat Jan 01 2022', dateTime2.startOf('year').toDateString());
+  t.is('Sun Dec 26 2021', dateTime2.startOf('weekDay').toDateString());
+});
+
+test('DateTime(2022, 03) end of DateTime(2022, 03) with month', async (t) => {
+  const dateTime = new DateTime(2022, 0o3, 10, 10, 12, 20, 852);
+  const dateTime2 = new DateTime(2022, 0o3, 10, 10, 12, 20, 852);
+  t.is(dateTime.toDateString(), dateTime2.endOf('seconds').toDateString());
+  t.is(dateTime.toDateString(), dateTime2.endOf('minutes').toDateString());
+  t.is(dateTime.toDateString(), dateTime2.endOf('hours').toDateString());
+  t.is(dateTime.toDateString(), dateTime2.endOf('date').toDateString());
+  t.is('Sat Apr 30 2022', dateTime2.endOf('month').toDateString());
+  t.is('Fri Mar 31 2023', dateTime2.endOf('year').toDateString());
+  t.is('Sat Apr 01 2023', dateTime2.endOf('weekDay').toDateString());
 });
