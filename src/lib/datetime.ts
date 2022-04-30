@@ -1,3 +1,5 @@
+import { DateTimeFormat } from "./formatter/datetime.format";
+import { DateTimeFormatter } from "./formatter/datetime.formatter";
 import { NUMBER_0, NUMBER_10, NUMBER_100, NUMBER_1000, NUMBER_12, NUMBER_23, NUMBER_24, NUMBER_4, NUMBER_400, NUMBER_59, NUMBER_6, NUMBER_60, NUMBER_7, NUMBER_999 } from "./util/datetime.constant";
 import { UnitOfDateTime, WeekDay } from "./util/unit-of-datetime.type";
 
@@ -431,6 +433,8 @@ export class DateTime extends Date {
     return Math.ceil((this.getDay() + 1 + numberOfDays) / NUMBER_7);
   }
 
-  
+  format(pattern: DateTimeFormat | string): string {
+    return DateTimeFormatter.init.ofPattern(pattern).format(this);
+  }
 
 }
