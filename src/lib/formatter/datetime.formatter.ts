@@ -790,7 +790,7 @@ class DateTimeFormatterBuilder {
         formattedDateTime += value ?? notation;
       }
     });
-
+    log.debug(formattedDateTime);
     return dateTime;
   }
 
