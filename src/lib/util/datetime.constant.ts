@@ -1,3 +1,4 @@
+export const NUMBER_0 = 0;
 export const NUMBER_1 = 1;
 export const NUMBER_2 = 2;
 export const NUMBER_3 = 3;
@@ -12,3 +13,14 @@ export const NUMBER_11 = 11;
 export const NUMBER_12 = 12;
 export const NUMBER_13 = 13;
 export const NUMBER_14 = 14;
+// For Hours
+export const NUMBER_23 = 23;
+export const NUMBER_24 = 24;
+// For Seconds
+export const NUMBER_999 = 999;
+// For Minutes
+export const NUMBER_59 = 59;
+export const NUMBER_60 = 60;
+export const NUMBER_100 = 100;
+export const NUMBER_400 = 400;
+export const NUMBER_1000 = 1000;
