@@ -7,7 +7,9 @@ import { DateTimeFormat } from "./datetime.format";
 export class DateTimeFormatter {
   private _dateTimeFormatBuilder!: DateTimeFormatterBuilder;
 
-  private constructor() { }
+  private constructor() {
+    Object.setPrototypeOf(this, DateTimeFormatter.prototype);
+  }
 
   static get init() {
     return new DateTimeFormatter();
@@ -58,7 +60,7 @@ class DateTimeFormatterBuilder {
   private monthList = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
   appendPattern(pattern: DateTimeFormat): DateTimeFormatterBuilder {
-    assert(pattern == null, 'Pattern found as null');
+    assert(pattern != null, 'Pattern found as null');
     this._currentPattern = DateTimeFormatPattern.build().convert(pattern);
 
     return this;
@@ -92,6 +94,7 @@ class DateTimeFormatterBuilder {
     let nextCharacterIsEscaped = false;
     let prevHoldValue = '';
     const formatArray = format.match(/(.)(?=\1)\1+|(.)(?!\2)/g) ?? [];
+    console.log((dateTime.month).toString())
     formatArray.forEach((notation) => {
       let value: string;
       if (nextCharacterIsEscaped && (prevHoldValue !== '' && prevHoldValue !== notation)) {
@@ -123,23 +126,23 @@ class DateTimeFormatterBuilder {
             break;
           case 'L':
           case 'M':
-            value = (dateTime.month + NUMBER_1).toString();
+            value = (dateTime.month === 0 ? 12 : dateTime.month).toString();
             break;
           case 'LL':
           case 'MM':
-            value = (dateTime.month + NUMBER_1).toString().padStart(NUMBER_2, '0');
+            value = (dateTime.month === 0 ? 12 : dateTime.month).toString().padStart(NUMBER_2, '0');
             break;
           case 'LLL':
           case 'MMM':
-            value = this._month(dateTime.month + NUMBER_1, true);
+            value = this._month(dateTime.month === 0 ? 12 : dateTime.month, true);
             break;
           case 'LLLL':
           case 'MMMM':
-            value = this._month(dateTime.month + NUMBER_1, false);
+            value = this._month(dateTime.month === 0 ? 12 : dateTime.month, false);
             break;
           case 'LLLLL':
           case 'MMMMM':
-            value = this._month(dateTime.month + NUMBER_1, false).substring(NUMBER_0, NUMBER_1);
+            value = this._month(dateTime.month === 0 ? 12 : dateTime.month, false).substring(NUMBER_0, NUMBER_1);
             break;
           // 12-hour format of an hour (1 through 12)
           case 'K':
@@ -249,26 +252,26 @@ class DateTimeFormatterBuilder {
           case 'EEE':
           case 'eee':
           case 'ccc':
-            value = this._dayOfWeek(dateTime.weekDay + NUMBER_1, true);
+            value = this._dayOfWeek(dateTime.weekDay - NUMBER_1, true);
             break;
           case 'EEEE':
           case 'eeee':
           case 'cccc':
-            value = this._dayOfWeek(dateTime.weekDay + NUMBER_1, false);
+            value = this._dayOfWeek(dateTime.weekDay - NUMBER_1, false);
             break;
           case 'EEEEE':
           case 'eeeee':
           case 'ccccc':
-            value = this._dayOfWeek(dateTime.weekDay + NUMBER_1, false).substring(NUMBER_0, NUMBER_1);
+            value = this._dayOfWeek(dateTime.weekDay - NUMBER_1, false).substring(NUMBER_0, NUMBER_1);
             break;
           case 'e':
-            value = (dateTime.weekDay + NUMBER_1).toString();
+            value = (dateTime.weekDay - NUMBER_1).toString();
             break;
           case 'ee':
-            value = (dateTime.weekDay + NUMBER_1).toString().padStart(NUMBER_2, '0');
+            value = (dateTime.weekDay - NUMBER_1).toString().padStart(NUMBER_2, '0');
             break;
           case 'eee':
-            value = this._dayOfWeek(dateTime.weekDay + NUMBER_1, true);
+            value = this._dayOfWeek(dateTime.weekDay - NUMBER_1, true);
             break;
           case 'Z':
           case 'ZZ':
@@ -429,7 +432,7 @@ class DateTimeFormatterBuilder {
    * @returns number
    */
   private _getQuarterOfYear(dateTime: DateTime): number {
-    const month = dateTime.month + NUMBER_1;
+    const month = dateTime.month;
 
     return (Math.ceil(month / NUMBER_3));
   }
@@ -437,7 +440,7 @@ class DateTimeFormatterBuilder {
   /// Returns the day of the year starting from 0.
   private _dayOfYear(dateTime: DateTime): number {
     let dayOfYear = dateTime.date;
-    const month = dateTime.month + NUMBER_1;
+    const month = dateTime.month;
     const year = dateTime.year;
     for (let i = NUMBER_1; i < month; i++) {
       dayOfYear += this._daysInMonth(i, year);
@@ -549,7 +552,7 @@ class DateTimeFormatterBuilder {
   private _getWeek(date: DateTime): number {
     const monthStart = new Date(date);
     monthStart.setDate(NUMBER_0);
-    const offset = (monthStart.getDay() + NUMBER_1) % NUMBER_7; // -1 is for a week starting on Monday
+    const offset = (monthStart.getDay()) % NUMBER_7; // -1 is for a week starting on Monday
 
     return Math.ceil((date.getDate() + offset) / NUMBER_7);
   }

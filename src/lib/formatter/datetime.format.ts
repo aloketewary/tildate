@@ -4,8 +4,8 @@ export class DateTimeFormat {
 
     constructor() {
         this._pattern = '';
+        Object.setPrototypeOf(this, DateTimeFormat.prototype);
     }
-
    /**
     * 2019-11-05T19:42:05-08:00
     * yyyy-MM-ddTHH:mm:ss-z
