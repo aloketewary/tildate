@@ -94,7 +94,6 @@ class DateTimeFormatterBuilder {
     let nextCharacterIsEscaped = false;
     let prevHoldValue = '';
     const formatArray = format.match(/(.)(?=\1)\1+|(.)(?!\2)/g) ?? [];
-    console.log((dateTime.month).toString())
     formatArray.forEach((notation) => {
       let value: string;
       if (nextCharacterIsEscaped && (prevHoldValue !== '' && prevHoldValue !== notation)) {
@@ -126,23 +125,23 @@ class DateTimeFormatterBuilder {
             break;
           case 'L':
           case 'M':
-            value = (dateTime.month === 0 ? 12 : dateTime.month).toString();
+            value = (dateTime.month + NUMBER_1).toString();
             break;
           case 'LL':
           case 'MM':
-            value = (dateTime.month === 0 ? 12 : dateTime.month).toString().padStart(NUMBER_2, '0');
+            value = (dateTime.month + NUMBER_1).toString().padStart(NUMBER_2, '0');
             break;
           case 'LLL':
           case 'MMM':
-            value = this._month(dateTime.month === 0 ? 12 : dateTime.month, true);
+            value = this._month(dateTime.month, true);
             break;
           case 'LLLL':
           case 'MMMM':
-            value = this._month(dateTime.month === 0 ? 12 : dateTime.month, false);
+            value = this._month(dateTime.month, false);
             break;
           case 'LLLLL':
           case 'MMMMM':
-            value = this._month(dateTime.month === 0 ? 12 : dateTime.month, false).substring(NUMBER_0, NUMBER_1);
+            value = this._month(dateTime.month, false).substring(0, 1);
             break;
           // 12-hour format of an hour (1 through 12)
           case 'K':
@@ -304,45 +303,45 @@ class DateTimeFormatterBuilder {
 
   /// Returns the name of the month, abbreviated if [abbr] is `true`.
   ///
-  /// [month] must be in the range of `1-12`.
+  /// [month] must be in the range of `0-11`.
   private _month(month: number, abbr: boolean): string {
-    assert(month >= NUMBER_1 && month <= NUMBER_12);
+    assert(month >= NUMBER_0 && month <= NUMBER_11);
     let nameOfMonth = '';
     switch (month) {
-      case NUMBER_1:
+      case NUMBER_0:
         nameOfMonth = abbr ? 'Jan' : 'January';
         break;
-      case NUMBER_2:
+      case NUMBER_1:
         nameOfMonth = abbr ? 'Feb' : 'February';
         break;
-      case NUMBER_3:
+      case NUMBER_2:
         nameOfMonth = abbr ? 'Mar' : 'March';
         break;
-      case NUMBER_4:
+      case NUMBER_3:
         nameOfMonth = abbr ? 'Apr' : 'April';
         break;
-      case NUMBER_5:
+      case NUMBER_4:
         nameOfMonth = 'May';
         break;
-      case NUMBER_6:
+      case NUMBER_5:
         nameOfMonth = abbr ? 'Jun' : 'June';
         break;
-      case NUMBER_7:
+      case NUMBER_6:
         nameOfMonth = abbr ? 'Jul' : 'July';
         break;
-      case NUMBER_8:
+      case NUMBER_7:
         nameOfMonth = abbr ? 'Aug' : 'August';
         break;
-      case NUMBER_9:
+      case NUMBER_8:
         nameOfMonth = abbr ? 'Sep' : 'September';
         break;
-      case NUMBER_10:
+      case NUMBER_9:
         nameOfMonth = abbr ? 'Oct' : 'October';
         break;
-      case NUMBER_11:
+      case NUMBER_10:
         nameOfMonth = abbr ? 'Nov' : 'November';
         break;
-      case NUMBER_12:
+      case NUMBER_11:
         nameOfMonth = abbr ? 'Dec' : 'December';
         break;
       default:
