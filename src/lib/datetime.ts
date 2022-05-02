@@ -524,4 +524,22 @@ export class DateTime extends Date {
     }
     return fiscalYearArr;
   }
+
+  previousMonth(pattern: string | DateTimeFormat = 'yyyy-MM-dd'): FromTo {
+    const to = new DateTime();
+    const from = to.clone;
+    if (to.month === 0) {
+      from.year = from.year - 1;
+      from.month = 11;
+      from.date = 1;
+      to.month = from.month;
+      to.date = _daysInMonth(from.month, from.year);
+    } else {
+      from.month = from.month - 1;
+      from.date = 1;
+      to.month = from.month;
+      to.date = _daysInMonth(to.month, to.year);
+    }
+    return new FromTo(from.format(pattern), to.format(pattern));
+  }
 }
