@@ -2,6 +2,7 @@ import { _dayOfWeek, _dayOfYear, _getQuarterOfYear, _getWeek, _suffixOfDay, _wee
 import { DateTime } from "../datetime";
 import { assert } from "../error/assert.error";
 import { NUMBER_0, NUMBER_1, NUMBER_10, NUMBER_11, NUMBER_12, NUMBER_17, NUMBER_2, NUMBER_3, NUMBER_4, NUMBER_5, NUMBER_6, NUMBER_7, NUMBER_8, NUMBER_9 } from "../util/datetime.constant";
+import { DateTimeFormatPattern } from "./datetime-format.pattern";
 import { DateTimeFormat } from "./datetime.format";
 
 export class DateTimeFormatterBuilder {
@@ -297,29 +298,3 @@ export class DateTimeFormatterBuilder {
 }
 
 
-// tslint:disable-next-line: max-classes-per-file
-export class DateTimeFormatPattern {
-  private _pattern: string;
-  private constructor() {
-    this._pattern = '';
-    Object.setPrototypeOf(this, DateTimeFormatPattern.prototype);
-  }
-
-  static build(): DateTimeFormatPattern {
-    return new DateTimeFormatPattern();
-  }
-
-  convert(dateTimeFormat: DateTimeFormat): DateTimeFormatPattern {
-    this._pattern = dateTimeFormat.pattern;
-
-    return this;
-  }
-
-  get pattern(): string {
-    return this._pattern;
-  }
-
-  isAmPmInFormat(): boolean {
-    return this._pattern.indexOf('a') !== -1;
-  }
-}

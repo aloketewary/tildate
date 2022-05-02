@@ -1,6 +1,7 @@
+import { _isLeapYear } from "./common/datetime.shared";
 import { DateTimeFormat } from "./formatter/datetime.format";
 import { DateTimeFormatter } from "./formatter/datetime.formatter";
-import { NUMBER_0, NUMBER_10, NUMBER_100, NUMBER_1000, NUMBER_12, NUMBER_23, NUMBER_24, NUMBER_4, NUMBER_400, NUMBER_59, NUMBER_6, NUMBER_60, NUMBER_7, NUMBER_999 } from "./util/datetime.constant";
+import { NUMBER_10, NUMBER_1000, NUMBER_12, NUMBER_23, NUMBER_24, NUMBER_59, NUMBER_6, NUMBER_60, NUMBER_7, NUMBER_999 } from "./util/datetime.constant";
 import { UnitOfDateTime, WeekDay } from "./util/unit-of-datetime.type";
 
 /**
@@ -421,7 +422,7 @@ export class DateTime extends Date {
     */
   isLeapYear(): boolean {
 
-    return this.year % NUMBER_100 === NUMBER_0 ? this.year % NUMBER_400 === NUMBER_0 : this.year % NUMBER_4 === NUMBER_0;
+    return _isLeapYear(this.year);
   }
 
   /**

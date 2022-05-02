@@ -2,7 +2,7 @@ import { _dayOfWeek, _dayOfYear, _getQuarterOfYear, _getWeek, _suffixOfDay, _wee
 import { DateTime } from "../datetime";
 import { assert } from "../error/assert.error";
 import { DateTimeFormatError } from "../error/date-format.error";
-import { DateTimeFormatPattern } from "../formatter/datetime-formatter.builder";
+import { DateTimeFormatPattern } from "../formatter/datetime-format.pattern";
 import { DateTimeFormat } from "../formatter/datetime.format";
 import { NUMBER_0, NUMBER_1, NUMBER_MIN_1, NUMBER_2, NUMBER_3, NUMBER_4, NUMBER_5, NUMBER_6, NUMBER_7, NUMBER_8, NUMBER_9, NUMBER_10, NUMBER_11 } from "../util/datetime.constant";
 

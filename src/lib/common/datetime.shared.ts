@@ -100,7 +100,7 @@ export function _getWeek(date: DateTime): number {
         days = NUMBER_31;
         break;
       case NUMBER_2:
-        days = this._isLeapYear(year) ? NUMBER_29 : NUMBER_28;
+        days = _isLeapYear(year) ? NUMBER_29 : NUMBER_28;
         break;
       case NUMBER_3:
         days = NUMBER_31;
