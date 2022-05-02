@@ -450,9 +450,9 @@ export class DateTime extends Date {
    * @returns FromTo object
    */
   rolling12Month(pattern: string | DateTimeFormat = 'yyyy-MM-dd'): FromTo {
-    const from = new DateTime();
-    const to = from.clone;
-    to.date = to.date - (to.isLeapYear() ? 366 : 365);
+    const to = new DateTime();
+    const from = to.clone;
+    from.date = from.date - (from.isLeapYear() ? 366 : 365);
     return new FromTo(from.format(pattern), to.format(pattern));
   }
 }
