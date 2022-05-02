@@ -1,4 +1,8 @@
-import { NUMBER_0, NUMBER_10, NUMBER_100, NUMBER_1000, NUMBER_12, NUMBER_23, NUMBER_24, NUMBER_4, NUMBER_400, NUMBER_59, NUMBER_6, NUMBER_60, NUMBER_7, NUMBER_999 } from "./util/datetime.constant";
+import { _daysInMonth, _isLeapYear } from "./common/datetime.shared";
+import { FromTo, FromToAsDateTime } from "./common/from-to.model";
+import { DateTimeFormat } from "./formatter/datetime.format";
+import { DateTimeFormatter } from "./formatter/datetime.formatter";
+import { NUMBER_10, NUMBER_1000, NUMBER_12, NUMBER_23, NUMBER_24, NUMBER_59, NUMBER_6, NUMBER_60, NUMBER_7, NUMBER_999 } from "./util/datetime.constant";
 import { UnitOfDateTime, WeekDay } from "./util/unit-of-datetime.type";
 
 /**
@@ -405,6 +409,7 @@ export class DateTime extends Date {
   }
 
   millisecondsSinceEpoch(): number {
+
     return Math.round(this.getTime());
   }
 
@@ -413,12 +418,16 @@ export class DateTime extends Date {
     return Math.round(this.millisecondsSinceEpoch() / NUMBER_1000);
   }
 
-  /// Returns `true` if [year] is a leap year, otherwise returns `false`.
+  /**
+   * Returns `true` if [year] is a leap year, otherwise returns `false`.
+   */
   isLeapYear(): boolean {
 
-    return this.year % NUMBER_100 === NUMBER_0 ? this.year % NUMBER_400 === NUMBER_0 : this.year % NUMBER_4 === NUMBER_0;
+    return _isLeapYear(this.year);
   }
 
+  /**
+   */
   get weekNumber(): number {
     const oneJan = new DateTime(this.getFullYear(), 0, 1);
     const numberOfDays = Math.floor((this.getTime() - oneJan.getTime()) / (NUMBER_24 * NUMBER_60 * NUMBER_60 * NUMBER_1000));
@@ -426,4 +435,93 @@ export class DateTime extends Date {
     return Math.ceil((this.getDay() + 1 + numberOfDays) / NUMBER_7);
   }
 
+  format(pattern: DateTimeFormat | string): string {
+    return DateTimeFormatter.init.ofPattern(pattern).format(this);
+  }
+
+  parse(dateTimeInString: string): DateTime {
+    const dateTimeFormatter = new DateTimeFormat().of("yyyy-MM-dd'T'hh:mm:ss.SS");
+    return DateTimeFormatter.init.ofPattern(dateTimeFormatter).parse(dateTimeInString);
+  }
+
+  /**
+   * Return Rolling DateTime as From and To
+   * @param pattern Pattern in {DateTimeFrom |string}
+   * @returns FromTo object
+   */
+  rolling12Month(pattern: string | DateTimeFormat = 'yyyy-MM-dd'): FromTo {
+    const to = new DateTime();
+    const from = to.clone;
+    from.date = from.date - (from.isLeapYear() ? 366 : 365);
+    return new FromTo(from.format(pattern), to.format(pattern));
+  }
+
+  /**
+   * Return Rolling DateTime as From and To as DateTime
+   * @returns FromTo object
+   */
+  rolling12MonthAsDateTime(): FromToAsDateTime {
+    const to = new DateTime();
+    const from = to.clone;
+    from.date = from.date - (from.isLeapYear() ? 366 : 365);
+    return new FromToAsDateTime(from, to);
+  }
+
+  calendarYear(pattern: string | DateTimeFormat = 'yyyy-MM-dd'): FromTo {
+    const to = new DateTime();
+    const from = to.clone.startOf('year');
+    return new FromTo(from.format(pattern), to.format(pattern));
+  }
+
+  calendarYearAsDateTime(): FromToAsDateTime {
+    const to = new DateTime();
+    const from = to.clone.startOf('year');
+    return new FromToAsDateTime(from, to);
+  }
+
+  fiscalYear(pattern: string | DateTimeFormat = 'yyyy-MM-dd'): FromTo {
+    const to = new DateTime();
+    const from = to.clone;
+    if ((to.month + 1) <= 3) {
+      from.year = from.year - 1;
+      from.month = 3;
+      from.date = 1;
+      to.date = _daysInMonth(to.month, to.year);
+    } else {
+      from.year = from.year - 1;
+      from.month = 3;
+      from.date = 1;
+      to.year = to.year + 1;
+      to.month = 2;
+      to.date = _daysInMonth(to.month, to.year);
+    }
+    return new FromTo(from.format(pattern), to.format(pattern));
+  }
+
+  fiscalYearAsString(numberOfFiscalYear: number = 1, noBackDatedYear: boolean = false, separator: string = '-'): Array<string> {
+    const to = new DateTime();
+    const from = to.clone;
+    const format = new DateTimeFormat().of('yyyy');
+    if ((to.month + 1) <= 3) {
+      from.year = from.year - 1;
+    } else {
+      to.year = to.year + 1;
+    }
+    const fiscalYearArr = new Array<string>();
+    console.log(noBackDatedYear);
+    // numberOfFiscalYear = numberOfFiscalYear == 1 ? numberOfFiscalYear : numberOfFiscalYear/2;
+    for (let index = 0; index < numberOfFiscalYear; index++) {
+      if (noBackDatedYear) {
+        fiscalYearArr.push(`${from.format(format)}${separator}${to.format(format)}`);
+        from.year += 1;
+        to.year += 1;
+      } else {
+        // TODO: need to update the details
+        fiscalYearArr.push(`${from.format(format)}${separator}${to.format(format)}`);
+        from.year += 1;
+        to.year += 1;
+      }
+    }
+    return fiscalYearArr;
+  }
 }

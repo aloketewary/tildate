@@ -19,7 +19,6 @@ jobs:
       # set up git since we will later push to the repo
       - run: git config --global user.name "GitHub CD bot"
       - run: git config --global user.email "github-cd-bot@example.com"
-      - run: npm version ${{ github.event.release.tag_name }}
       # build the project
       - run: npm run build
       - run: npm test
@@ -34,7 +33,6 @@ jobs:
           node-version: 16
           registry-url: https://registry.npmjs.org/
       - run: npm ci
-      - run: npm version ${{ github.event.release.tag_name }}
       - run: npm publish --tag ${{ github.event.release.target_commitish }}
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
