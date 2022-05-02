@@ -437,4 +437,8 @@ export class DateTime extends Date {
     return DateTimeFormatter.init.ofPattern(pattern).format(this);
   }
 
+  parse(dateTimeInString: string): DateTime {
+    const dateTimeFormatter = new DateTimeFormat().of("yyyy-MM-dd'T'hh:mm:ss.SS");
+    return DateTimeFormatter.init.ofPattern(dateTimeFormatter).parse(dateTimeInString);
+  }
 }
