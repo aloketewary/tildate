@@ -206,48 +206,38 @@ export class DateTimeParserBuilder {
                     break;
                 // Minutes
                 case 'm':
-                    value = dateTime.getMinutes().toString();
+                    dateTime.minutes = parseInt(dateTimeStringArray[index].padStart(2, '0'));
                     break;
                 case 'mm':
-                    value = dateTime.getMinutes().toString().padStart(2, '0');
+                    dateTime.minutes = parseInt(dateTimeStringArray[index]);
                     break;
                 // Seconds
                 case 's':
-                    value = dateTime.getSeconds().toString();
+                    dateTime.seconds = parseInt(dateTimeStringArray[index].padStart(2, '0'));
                     break;
                 case 'ss':
-                    value = dateTime.getSeconds().toString().padStart(2, '0');
+                    dateTime.seconds = parseInt(dateTimeStringArray[index]);
                     break;
                 // Milliseconds (0 - 999)
                 case 'S':
-                    value = dateTime.getMilliseconds().toString();
+                    dateTime.setMilliseconds(parseInt(dateTimeStringArray[index].padStart(3, '0')));
                     break;
                 case 'SS':
-                    value = dateTime.getMilliseconds().toString().padStart(2, '0');
+                    dateTime.setMilliseconds(parseInt(dateTimeStringArray[index].padStart(2, '0')));
                     break;
                 case 'SSS':
-                    value = dateTime.getMilliseconds().toString().padStart(3, '0');
+                    dateTime.setMilliseconds(parseInt(dateTimeStringArray[index]));
                     break;
                 case 'SSSS':
-                    value = dateTime.getMilliseconds().toString().padStart(4, '0');
-                    break;
                 case 'SSSSS':
-                    value = dateTime.getMilliseconds().toString().padStart(5, '0');
-                    break;
                 case 'SSSSSS':
-                    value = dateTime.getMilliseconds().toString().padStart(6, '0');
-                    break;
                 case 'SSSSSSS':
-                    value = dateTime.getMilliseconds().toString().padStart(7, '0');
-                    break;
                 case 'SSSSSSSS':
-                    value = dateTime.getMilliseconds().toString().padStart(8, '0');
-                    break;
                 case 'SSSSSSSSS':
-                    value = dateTime.getMilliseconds().toString().padStart(9, '0');
+                    dateTime.setMilliseconds(parseInt(dateTimeStringArray[index].substring(0, 2)));
                     break;
                 case 'n':
-                    value = dateTime.nanoSeconds.toString();
+                    dateTime = new DateTime(parseInt(dateTimeStringArray[index]));
                     break;
                 case 'a':
                     value = dateTime.meridiem();

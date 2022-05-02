@@ -1,4 +1,5 @@
 import { _isLeapYear } from "./common/datetime.shared";
+import { FromTo } from "./common/from-to.model";
 import { DateTimeFormat } from "./formatter/datetime.format";
 import { DateTimeFormatter } from "./formatter/datetime.formatter";
 import { NUMBER_10, NUMBER_1000, NUMBER_12, NUMBER_23, NUMBER_24, NUMBER_59, NUMBER_6, NUMBER_60, NUMBER_7, NUMBER_999 } from "./util/datetime.constant";
@@ -441,5 +442,17 @@ export class DateTime extends Date {
   parse(dateTimeInString: string): DateTime {
     const dateTimeFormatter = new DateTimeFormat().of("yyyy-MM-dd'T'hh:mm:ss.SS");
     return DateTimeFormatter.init.ofPattern(dateTimeFormatter).parse(dateTimeInString);
+  }
+
+  /**
+   * Return Rolling DateTime as From and To
+   * @param pattern Pattern in {DateTimeFrom |string}
+   * @returns FromTo object
+   */
+  rolling12Month(pattern: string | DateTimeFormat = 'yyyy-MM-dd'): FromTo {
+    const from = new DateTime();
+    const to = from.clone;
+    to.date = to.date - (to.isLeapYear() ? 366 : 365);
+    return new FromTo(from.format(pattern), to.format(pattern));
   }
 }
