@@ -1,3 +1,6 @@
+/**
+ * @internal
+ */
 export const NUMBER_MIN_1 = -1;
 export const NUMBER_0 = 0;
 export const NUMBER_1 = 1;

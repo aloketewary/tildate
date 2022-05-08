@@ -208,3 +208,29 @@ test('DateTime(2022, 03) end of DateTime(2022, 03) with month', async (t) => {
   t.is('Fri Mar 31 2023', dateTime2.endOf('year').toDateString());
   t.is('Sat Apr 01 2023', dateTime2.endOf('weekDay').toDateString());
 });
+
+test('DateTime(2022, 04,10) fiscal year', async (t) => {
+  const dateTime = new DateTime(2022, 3, 10, 10, 12, 20, 852);
+  const fromTo = dateTime.fiscalYear('yyyy-MM-dd');
+  t.is('2022-04-01', fromTo.from);
+  t.is('2023-03-31', fromTo.to);
+});
+
+test('DateTime(2022, 03, 10) fiscal year', async (t) => {
+  const dateTime = new DateTime(2022, 2, 10, 10, 12, 20, 852);
+  const fromTo = dateTime.fiscalYear();
+  t.is('2021-04-01', fromTo.from);
+  t.is('2022-03-31', fromTo.to);
+});
+
+test('fiscal year will be 2021-2022', async (t) => {
+  const dateTime = new DateTime(2022, 2, 10, 10, 12, 20, 852);
+  const fromTo = dateTime.fiscalYear('yyyy');
+  t.is('2021-2022', `${fromTo.from}-${fromTo.to}`);
+});
+
+test('fiscal year will be 2022-2023', async (t) => {
+  const dateTime = new DateTime(2022, 3, 10, 10, 12, 20, 852);
+  const fromTo = dateTime.fiscalYear('yyyy');
+  t.is('2022-2023', `${fromTo.from}-${fromTo.to}`);
+});

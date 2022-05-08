@@ -450,7 +450,7 @@ export class DateTime extends Date {
    * @returns FromTo object
    */
   rolling12Month(pattern: string | DateTimeFormat = 'yyyy-MM-dd'): FromTo {
-    const to = new DateTime();
+    const to = this;
     const from = to.clone;
     from.date = from.date - (from.isLeapYear() ? 366 : 365);
     return new FromTo(from.format(pattern), to.format(pattern));
@@ -461,37 +461,35 @@ export class DateTime extends Date {
    * @returns FromTo object
    */
   rolling12MonthAsDateTime(): FromToAsDateTime {
-    const to = new DateTime();
+    const to = this;
     const from = to.clone;
     from.date = from.date - (from.isLeapYear() ? 366 : 365);
     return new FromToAsDateTime(from, to);
   }
 
   calendarYear(pattern: string | DateTimeFormat = 'yyyy-MM-dd'): FromTo {
-    const to = new DateTime();
+    const to = this;
     const from = to.clone.startOf('year');
     return new FromTo(from.format(pattern), to.format(pattern));
   }
 
   calendarYearAsDateTime(): FromToAsDateTime {
-    const to = new DateTime();
+    const to = this;
     const from = to.clone.startOf('year');
     return new FromToAsDateTime(from, to);
   }
 
   fiscalYear(pattern: string | DateTimeFormat = 'yyyy-MM-dd'): FromTo {
-    const to = new DateTime();
+    const to = this;
     const from = to.clone;
-    if ((to.month + 1) <= 3) {
-      from.year = from.year - 1;
-      from.month = 3;
-      from.date = 1;
+    from.month = 3;
+    from.date = 1;
+    if (to.month < 3) {
+      from.year = (from.year - 1);
+      to.month = 2;
       to.date = _daysInMonth(to.month, to.year);
     } else {
-      from.year = from.year - 1;
-      from.month = 3;
-      from.date = 1;
-      to.year = to.year + 1;
+      to.year = (to.year + 1);
       to.month = 2;
       to.date = _daysInMonth(to.month, to.year);
     }
@@ -499,7 +497,7 @@ export class DateTime extends Date {
   }
 
   fiscalYearAsString(numberOfFiscalYear: number = 1, noBackDatedYear: boolean = false, separator: string = '-'): Array<string> {
-    const to = new DateTime();
+    const to = this;
     const from = to.clone;
     const format = new DateTimeFormat().of('yyyy');
     if ((to.month + 1) <= 3) {
@@ -523,5 +521,23 @@ export class DateTime extends Date {
       }
     }
     return fiscalYearArr;
+  }
+
+  previousMonth(pattern: string | DateTimeFormat = 'yyyy-MM-dd'): FromTo {
+    const to = this;
+    const from = to.clone;
+    if (to.month === 0) {
+      from.year = from.year - 1;
+      from.month = 11;
+      from.date = 1;
+      to.month = from.month;
+      to.date = _daysInMonth(from.month, from.year);
+    } else {
+      from.month = from.month - 1;
+      from.date = 1;
+      to.month = from.month;
+      to.date = _daysInMonth(to.month, to.year);
+    }
+    return new FromTo(from.format(pattern), to.format(pattern));
   }
 }
