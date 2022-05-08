@@ -1,6 +1,84 @@
-<!DOCTYPE html><html class="default"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>tildate</title><meta name="description" content="Documentation for tildate"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="assets/style.css"/><link rel="stylesheet" href="assets/highlight.css"/><script async src="assets/search.js" id="search-script"></script></head><body><script>document.body.classList.add(localStorage.getItem("tsd-theme") || "os")</script><header><div class="tsd-page-toolbar"><div class="container"><div class="table-wrap"><div class="table-cell" id="tsd-search" data-base="."><div class="field"><label for="tsd-search-field" class="tsd-widget search no-caption">Search</label><input type="text" id="tsd-search-field"/></div><ul class="results"><li class="state loading">Preparing search index...</li><li class="state failure">The search index is not available</li></ul><a href="index.html" class="title">tildate</a></div><div class="table-cell" id="tsd-widgets"><div id="tsd-filter"><a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a><div class="tsd-filter-group"><div class="tsd-select" id="tsd-filter-visibility"><span class="tsd-select-label">All</span><ul class="tsd-select-list"><li data-value="public">Public</li><li data-value="protected">Public/Protected</li><li data-value="private" class="selected">All</li></ul></div> <input type="checkbox" id="tsd-filter-inherited" checked/><label class="tsd-widget" for="tsd-filter-inherited">Inherited</label><input type="checkbox" id="tsd-filter-externals" checked/><label class="tsd-widget" for="tsd-filter-externals">Externals</label></div></div><a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a></div></div></div></div><div class="tsd-page-title"><div class="container"><h1>tildate </h1></div></div></header><div class="container container-main"><div class="row"><div class="col-8 col-content"><div class="tsd-panel tsd-typography">
+<!DOCTYPE html><html class="default"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>tildate</title><meta name="description" content="Documentation for tildate"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="assets/style.css"/><link rel="stylesheet" href="assets/highlight.css"/><script async src="assets/search.js" id="search-script"></script></head><body><script>document.body.classList.add(localStorage.getItem("tsd-theme") || "os")</script><header><div class="tsd-page-toolbar"><div class="container"><div class="table-wrap"><div class="table-cell" id="tsd-search" data-base="."><div class="field"><label for="tsd-search-field" class="tsd-widget search no-caption">Search</label><input type="text" id="tsd-search-field"/></div><ul class="results"><li class="state loading">Preparing search index...</li><li class="state failure">The search index is not available</li></ul><a href="index.html" class="title">tildate</a></div><div class="table-cell" id="tsd-widgets"><div id="tsd-filter"><a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a><div class="tsd-filter-group"><div class="tsd-select" id="tsd-filter-visibility"><span class="tsd-select-label">All</span><ul class="tsd-select-list"><li data-value="public">Public</li><li data-value="protected">Public/Protected</li><li data-value="private" class="selected">All</li></ul></div> <input type="checkbox" id="tsd-filter-inherited" checked/><label class="tsd-widget" for="tsd-filter-inherited">Inherited</label><input type="checkbox" id="tsd-filter-externals" checked/><label class="tsd-widget" for="tsd-filter-externals">Externals</label></div></div><a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a></div></div></div></div><div class="tsd-page-title"><div class="container"><h1>tildate </h1></div></div></header><div class="container container-main"><div class="row"><div class="col-8 col-content"><div class="tsd-panel tsd-typography"><p align="center">
+  <img src="https://i.ibb.co/CQvK68H/tildate-logo.png" width="597" alt="tildate">
+</p>
+
+
 <a href="#tildate" id="tildate" style="color: inherit; text-decoration: none;">
   <h1>tildate</h1>
 </a>
+<blockquote>
 <p>TilDate is a typescript datetime library to format and parse native js Date()</p>
+</blockquote>
+<p><a href="https://travis-ci.org/aloketewary/tildate"><img src="https://travis-ci.org/aloketewary/tildate.svg?branch=master" alt="Build Status"></a>
+<a href="https://www.npmjs.com/package/tildate"><img src="https://img.shields.io/npm/v/tildate.svg" alt="NPM version"></a>
+<img src="https://img.shields.io/npm/dm/tildate.svg" alt="Downloads">
+<a href="https://github.com/conventional-changelog/standard-version"><img src="https://img.shields.io/badge/release-standard%20version-brightgreen.svg" alt="Standard Version"></a>
+<a href="https://github.com/prettier/prettier"><img src="https://img.shields.io/badge/styled_with-prettier-ff69b4.svg" alt="styled with prettier"></a>
+<a href="https://conventionalcommits.org"><img src="https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg" alt="Conventional Commits"></a></p>
+<hr>
+
+<a href="#✨-features" id="✨-features" style="color: inherit; text-decoration: none;">
+  <h2>✨ Features</h2>
+</a>
+<ul>
+<li>DateTime is capable of formatting using same formatter as Java</li>
+<li>It can Parse string using same formatter</li>
+<li>Added extra functionality ex: isBefore(), isAfter(), isSame()</li>
+<li></li>
+</ul>
+
+<a href="#🔧-installation" id="🔧-installation" style="color: inherit; text-decoration: none;">
+  <h2>🔧 Installation</h2>
+</a>
+<pre><code class="language-sh"><span class="hl-0">yarn add tildate</span><br/><span class="hl-0">or</span><br/><span class="hl-0">npm i tildate -S</span>
+</code></pre>
+
+<a href="#🎬-getting-started" id="🎬-getting-started" style="color: inherit; text-decoration: none;">
+  <h2>🎬 Getting started</h2>
+</a>
+<p>It&#39;s simple to start:</p>
+<pre><code class="language-ts"><span class="hl-1">import</span><span class="hl-0"> { </span><span class="hl-2">DateTime</span><span class="hl-0"> } </span><span class="hl-1">from</span><span class="hl-0"> </span><span class="hl-3">&#39;tildate&#39;</span><span class="hl-0">;</span><br/><span class="hl-4">// Others imports</span><br/><span class="hl-5">class</span><span class="hl-0"> </span><span class="hl-6">MyClass</span><span class="hl-0"> {</span><br/><span class="hl-0">   </span><span class="hl-2">dateTime</span><span class="hl-0"> = </span><span class="hl-5">new</span><span class="hl-0"> </span><span class="hl-7">DateTime</span><span class="hl-0">();</span><br/><span class="hl-0">}</span><br/><br/><span class="hl-0">&lt;!-- </span><span class="hl-5">in</span><span class="hl-0"> </span><span class="hl-2">html</span><span class="hl-0"> --&gt;</span><br/><span class="hl-0">{{</span><span class="hl-2">dateTime</span><span class="hl-0">}} </span><span class="hl-4">// for Angular</span>
+</code></pre>
+
+<a href="#🎭-examples" id="🎭-examples" style="color: inherit; text-decoration: none;">
+  <h2>🎭 Examples</h2>
+</a>
+<p>Go checkout <a href="./examples">examples</a> !</p>
+
+<a href="#📜-api" id="📜-api" style="color: inherit; text-decoration: none;">
+  <h2>📜 API</h2>
+</a>
+<blockquote>
+<p>Document your API here</p>
+</blockquote>
+
+<a href="#publicmethodonevaluestring-string" id="publicmethodonevaluestring-string" style="color: inherit; text-decoration: none;">
+  <h3><code>publicMethodOne(value:string): string</code></h3>
+</a>
+<p>These methods do foo bar moo...</p>
+<p><strong>Example:</strong></p>
+<pre><code class="language-ts"><span class="hl-4">// example</span>
+</code></pre>
+
+<a href="#🎓-guides" id="🎓-guides" style="color: inherit; text-decoration: none;">
+  <h2>🎓 Guides</h2>
+</a>
+<details>
+<summary>How to do format</summary>
+ new DateTime().format('yyyy-MM-dd');
+</details>
+<details>
+<summary>How to do parse</summary>
+ new DateTime().parse("2012-03-12'T'12:45:34.34");
+</details>
+
+
+<a href="#🕵️-troubleshooting" id="🕵️-troubleshooting" style="color: inherit; text-decoration: none;">
+  <h3>🕵️ Troubleshooting</h3>
+</a>
+
+<a href="#🥂-license" id="🥂-license" style="color: inherit; text-decoration: none;">
+  <h2>🥂 License</h2>
+</a>
+<p><a href="./LICENSE">MIT</a> as always</p>
 </div></div><div class="col-4 col-menu menu-sticky-wrap menu-highlight"><nav class="tsd-navigation primary"><ul><li class="current"><a href="modules.html">Exports</a></li></ul></nav><nav class="tsd-navigation secondary menu-sticky"><ul><li class="tsd-kind-class"><a href="classes/DateTime.html" class="tsd-kind-icon">Date<wbr/>Time</a></li><li class="tsd-kind-class"><a href="classes/DateTimeFormatError.html" class="tsd-kind-icon">Date<wbr/>Time<wbr/>Format<wbr/>Error</a></li><li class="tsd-kind-type-alias"><a href="modules.html#UnitOfDateTime" class="tsd-kind-icon">Unit<wbr/>Of<wbr/>Date<wbr/>Time</a></li><li class="tsd-kind-type-alias"><a href="modules.html#WeekDay" class="tsd-kind-icon">Week<wbr/>Day</a></li><li class="tsd-kind-variable"><a href="modules.html#NUMBER_0" class="tsd-kind-icon">NUMBER_<wbr/>0</a></li><li class="tsd-kind-variable"><a href="modules.html#NUMBER_1" class="tsd-kind-icon">NUMBER_<wbr/>1</a></li><li class="tsd-kind-variable"><a href="modules.html#NUMBER_10" class="tsd-kind-icon">NUMBER_<wbr/>10</a></li><li class="tsd-kind-variable"><a href="modules.html#NUMBER_100" class="tsd-kind-icon">NUMBER_<wbr/>100</a></li><li class="tsd-kind-variable"><a href="modules.html#NUMBER_1000" class="tsd-kind-icon">NUMBER_<wbr/>1000</a></li><li class="tsd-kind-variable"><a href="modules.html#NUMBER_11" class="tsd-kind-icon">NUMBER_<wbr/>11</a></li><li class="tsd-kind-variable"><a href="modules.html#NUMBER_12" class="tsd-kind-icon">NUMBER_<wbr/>12</a></li><li class="tsd-kind-variable"><a href="modules.html#NUMBER_13" class="tsd-kind-icon">NUMBER_<wbr/>13</a></li><li class="tsd-kind-variable"><a href="modules.html#NUMBER_14" class="tsd-kind-icon">NUMBER_<wbr/>14</a></li><li class="tsd-kind-variable"><a href="modules.html#NUMBER_15" class="tsd-kind-icon">NUMBER_<wbr/>15</a></li><li class="tsd-kind-variable"><a href="modules.html#NUMBER_16" class="tsd-kind-icon">NUMBER_<wbr/>16</a></li><li class="tsd-kind-variable"><a href="modules.html#NUMBER_17" class="tsd-kind-icon">NUMBER_<wbr/>17</a></li><li class="tsd-kind-variable"><a href="modules.html#NUMBER_18" class="tsd-kind-icon">NUMBER_<wbr/>18</a></li><li class="tsd-kind-variable"><a href="modules.html#NUMBER_2" class="tsd-kind-icon">NUMBER_<wbr/>2</a></li><li class="tsd-kind-variable"><a href="modules.html#NUMBER_21" class="tsd-kind-icon">NUMBER_<wbr/>21</a></li><li class="tsd-kind-variable"><a href="modules.html#NUMBER_22" class="tsd-kind-icon">NUMBER_<wbr/>22</a></li><li class="tsd-kind-variable"><a href="modules.html#NUMBER_23" class="tsd-kind-icon">NUMBER_<wbr/>23</a></li><li class="tsd-kind-variable"><a href="modules.html#NUMBER_24" class="tsd-kind-icon">NUMBER_<wbr/>24</a></li><li class="tsd-kind-variable"><a href="modules.html#NUMBER_28" class="tsd-kind-icon">NUMBER_<wbr/>28</a></li><li class="tsd-kind-variable"><a href="modules.html#NUMBER_29" class="tsd-kind-icon">NUMBER_<wbr/>29</a></li><li class="tsd-kind-variable"><a href="modules.html#NUMBER_3" class="tsd-kind-icon">NUMBER_<wbr/>3</a></li><li class="tsd-kind-variable"><a href="modules.html#NUMBER_30" class="tsd-kind-icon">NUMBER_<wbr/>30</a></li><li class="tsd-kind-variable"><a href="modules.html#NUMBER_31" class="tsd-kind-icon">NUMBER_<wbr/>31</a></li><li class="tsd-kind-variable"><a href="modules.html#NUMBER_4" class="tsd-kind-icon">NUMBER_<wbr/>4</a></li><li class="tsd-kind-variable"><a href="modules.html#NUMBER_400" class="tsd-kind-icon">NUMBER_<wbr/>400</a></li><li class="tsd-kind-variable"><a href="modules.html#NUMBER_5" class="tsd-kind-icon">NUMBER_<wbr/>5</a></li><li class="tsd-kind-variable"><a href="modules.html#NUMBER_59" class="tsd-kind-icon">NUMBER_<wbr/>59</a></li><li class="tsd-kind-variable"><a href="modules.html#NUMBER_6" class="tsd-kind-icon">NUMBER_<wbr/>6</a></li><li class="tsd-kind-variable"><a href="modules.html#NUMBER_60" class="tsd-kind-icon">NUMBER_<wbr/>60</a></li><li class="tsd-kind-variable"><a href="modules.html#NUMBER_7" class="tsd-kind-icon">NUMBER_<wbr/>7</a></li><li class="tsd-kind-variable"><a href="modules.html#NUMBER_8" class="tsd-kind-icon">NUMBER_<wbr/>8</a></li><li class="tsd-kind-variable"><a href="modules.html#NUMBER_9" class="tsd-kind-icon">NUMBER_<wbr/>9</a></li><li class="tsd-kind-variable"><a href="modules.html#NUMBER_999" class="tsd-kind-icon">NUMBER_<wbr/>999</a></li><li class="tsd-kind-variable"><a href="modules.html#NUMBER_MIN_1" class="tsd-kind-icon">NUMBER_<wbr/>MIN_<wbr/>1</a></li><li class="tsd-kind-function"><a href="modules.html#assert" class="tsd-kind-icon">assert</a></li></ul></nav></div></div></div><footer class="with-border-bottom"><div class="container"><h2>Legend</h2><div class="tsd-legend-group"><ul class="tsd-legend"><li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li><li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li><li class="tsd-kind-accessor tsd-parent-kind-class"><span class="tsd-kind-icon">Accessor</span></li></ul><ul class="tsd-legend"><li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li><li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private method</span></li></ul><ul class="tsd-legend"><li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited constructor</span></li></ul><ul class="tsd-legend"><li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li></ul></div><h2>Settings</h2><p>Theme <select id="theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></p></div></footer><div class="container tsd-generator"><p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></div><div class="overlay"></div><script src="assets/main.js"></script></body></html>
