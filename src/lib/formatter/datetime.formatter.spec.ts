@@ -99,7 +99,7 @@ test('DateTimeFormatter format test q D DD DDD', async (t) => {
   const dateTime = new DateTime(2022, 0o4, 10, 0o0, 45, 6);
   const format = new DateTimeFormat().of('q D DD DDD');
   const dateTimeFormat = DateTimeFormatter.init.ofPattern(format).format(dateTime);
-	t.is(dateTimeFormat, '2 100 100 100');
+	t.is(dateTimeFormat, '2 99 99 099');
 });
 
 test('DateTimeFormatter format test GGGG GGGGG w ww W', async (t) => {
